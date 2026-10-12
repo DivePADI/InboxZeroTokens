@@ -1,0 +1,15 @@
+[
+  {
+    "uid": 11,
+    "from": "human@example.net",
+    "subject": "Please review the brief",
+    "date": "Mon, 12 Oct 2026 01:00:00 +0000",
+    "message_id": "<brief-11@example.net>"
+  },
+  {
+    "uid": 12,
+    "from": "list@news.example",
+    "subject": "weekly digest",
+    "headers": { "List-Id": "<news.example>" }
+  }
+]

@@ -1,0 +1,44 @@
+# Copy to ~/.config/inboxzerotokens/config.toml and replace placeholders.
+# Passwords never go in this file.
+
+[settings]
+state_dir = "~/.local/state/inboxzerotokens"
+log_file = "~/.local/state/inboxzerotokens/izt.log"
+pace_seconds = 8.0
+max_login_failures = 3
+imap_timeout = 30
+max_items_per_wake = 50
+include_bodies = false
+internal_domains = ["agents.example.com"]
+skip_auto_replies = true
+skip_mailing_lists = true
+skip_bounces = true
+skip_spam = true
+
+[quiet_hours]
+enabled = true
+start = 22
+end = 7
+priority_from = ["owner@example.com"]
+
+[filters]
+allow_from = []
+deny_from = []
+
+[[accounts]]
+name = "work"
+host = "imap.example.com"
+port = 993
+user = "agent@example.com"
+folder = "INBOX"
+password = { env = "WORK_IMAP_PASSWORD" }
+wake = ["primary"]
+
+[[wakes]]
+id = "primary"
+type = "webhook"
+url = "https://example.com/hooks/wake"
+auth = "bearer"
+token = { env = "WAKE_TOKEN" }
+hmac_secret = { env = "WAKE_HMAC" }
+hmac_header = "X-InboxZeroTokens-Signature"
