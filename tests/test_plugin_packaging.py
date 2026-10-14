@@ -14,14 +14,11 @@ ALLOWED_KEYS = {
     "version",
     "minClientVersions",
     "author",
-    "publisher",
     "homepage",
     "repository",
     "license",
     "logo",
     "keywords",
-    "category",
-    "tags",
     "commands",
     "agents",
     "skills",
@@ -42,6 +39,9 @@ def test_cursor_plugin_manifest_matches_current_schema():
     assert data["author"]["name"]
     assert "email" not in data["author"]
     assert data["license"] == "MIT"
+    assert "publisher" not in data
+    assert "category" not in data
+    assert "tags" not in data
     assert data["skills"] == "./skills/"
     assert data["rules"] == "./rules/"
     assert (ROOT / "skills" / "inboxzerotokens" / "SKILL.md").is_file()

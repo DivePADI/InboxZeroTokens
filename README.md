@@ -48,11 +48,11 @@ Python 3.9+, **standard library only** at runtime. Optional OS keychain: `pip in
 
 ## Cursor / Grok Bot plugin
 
-This repository is a Cursor marketplace plugin (Grok Bot uses the same package). Manifest: [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json). Agents should follow [`skills/inboxzerotokens/SKILL.md`](skills/inboxzerotokens/SKILL.md).
+Packaged as a Cursor plugin; once listed, install from the Cursor marketplace; until then clone this repo. Manifest: [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json). Agents should follow [`skills/inboxzerotokens/SKILL.md`](skills/inboxzerotokens/SKILL.md).
 
 ### Plugin setup
 
-1. Install **InboxZeroTokens** from the Cursor or Grok Bot marketplace, or clone this repo.
+1. Packaged as a Cursor plugin; once listed, install from the Cursor marketplace; until then clone this repo.
 2. Install the watcher: `pipx install git+https://github.com/DivePADI/InboxZeroTokens` (or `pip install` from the same URL / this checkout).
 3. `izt init -o ~/.config/inboxzerotokens/config.toml`
 4. Set IMAP `host` / `user` and a **secret reference** (`env`, a `0600` file, or the OS keychain). Never put a password in the TOML, in chat, or in git.

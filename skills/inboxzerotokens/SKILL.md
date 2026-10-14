@@ -5,7 +5,7 @@ description: Set up and use the InboxZeroTokens scripted inbox pre-check so agen
 
 # InboxZeroTokens
 
-A no-AI IMAP watcher packaged as a Cursor / Grok Bot marketplace plugin. It costs **zero tokens** when the inbox is empty. You (the agent) run only after a real, new, non-automated message arrives.
+A no-AI IMAP watcher packaged as a Cursor plugin. Once listed, install it from the Cursor marketplace; until then clone this repo. It costs **zero tokens** when the inbox is empty. You (the agent) run only after a real, new, non-automated message arrives.
 
 The plugin manifest is `.cursor-plugin/plugin.json`. This skill is the agent-facing setup path.
 
