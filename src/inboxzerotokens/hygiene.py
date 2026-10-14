@@ -25,7 +25,7 @@ SKIP_DIRS = {
     ".eggs",
 }
 
-SCAN_SUFFIXES = {".py", ".md", ".toml", ".yml", ".yaml", ".sh", ".txt", ".xml", ".json"}
+SCAN_SUFFIXES = {".py", ".md", ".mdc", ".toml", ".yml", ".yaml", ".sh", ".txt", ".xml", ".json"}
 
 # Generic built-in list. No personal mailboxes, names, or private hostnames.
 GENERIC_PATTERNS: Tuple[Pattern[str], ...] = (

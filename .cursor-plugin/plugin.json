@@ -1,0 +1,33 @@
+{
+  "name": "inboxzerotokens",
+  "displayName": "InboxZeroTokens",
+  "version": "1.0.0",
+  "description": "Scripted IMAP inbox pre-check that wakes Grok Bot or Cursor only when real new mail arrives. An empty inbox costs zero tokens.",
+  "author": {
+    "name": "IndPer (Independent Perspective)"
+  },
+  "publisher": "IndPer",
+  "homepage": "https://github.com/DivePADI/InboxZeroTokens",
+  "repository": "https://github.com/DivePADI/InboxZeroTokens",
+  "license": "MIT",
+  "keywords": [
+    "imap",
+    "email",
+    "inbox",
+    "agents",
+    "webhook",
+    "tokens",
+    "grok",
+    "cursor"
+  ],
+  "category": "developer-tools",
+  "tags": [
+    "email",
+    "imap",
+    "agents",
+    "automation",
+    "tokens"
+  ],
+  "skills": "./skills/",
+  "rules": "./rules/"
+}

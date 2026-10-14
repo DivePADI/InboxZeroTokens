@@ -46,6 +46,43 @@ Python 3.9+, **standard library only** at runtime. Optional OS keychain: `pip in
 
 `izt` and `inboxzerotokens` are the same CLI.
 
+## Cursor / Grok Bot plugin
+
+This repository is a Cursor marketplace plugin (Grok Bot uses the same package). Manifest: [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json). Agents should follow [`skills/inboxzerotokens/SKILL.md`](skills/inboxzerotokens/SKILL.md).
+
+### Plugin setup
+
+1. Install **InboxZeroTokens** from the Cursor or Grok Bot marketplace, or clone this repo.
+2. Install the watcher: `pipx install git+https://github.com/DivePADI/InboxZeroTokens` (or `pip install` from the same URL / this checkout).
+3. `izt init -o ~/.config/inboxzerotokens/config.toml`
+4. Set IMAP `host` / `user` and a **secret reference** (`env`, a `0600` file, or the OS keychain). Never put a password in the TOML, in chat, or in git.
+5. Point `[[wakes]]` at the agent (Grok Bot routine webhook, command with JSON on stdin, or a drop file). Do **not** also schedule that agent to poll mail.
+6. `izt doctor` until every account is `ok`.
+7. `izt install-service --write`, then load the unit yourself (see [Limitations](#limitations)).
+
+The script is the inbox pre-check. The agent runs only after a wake.
+
+### Test task
+
+Prove a wake on new mail, then prove silence on an empty inbox.
+
+**A. Send a test email and confirm a wake**
+
+1. Run `izt run --once` once on a mailbox this install has not seen. The first visit **seeds state and must not wake**.
+2. Send one ordinary test message to the watched folder (not an auto-reply, list, bounce, spam-flagged, deny-listed, or internal-domain sender).
+3. Run `izt run --once` again, or wait for the timer.
+4. Confirm **exactly one wake**. The payload `kind` is `new-mail` and `count` is at least 1.
+
+Offline stand-in (no live mailbox): `izt dry-run --mock` should report a pending item (`Please review the brief`) and `wakes.<id> = "dry-run"`. `izt test-wake --target <id>` delivers a sample payload without IMAP.
+
+**B. Confirm an empty inbox causes zero wakes**
+
+1. Leave the inbox with no *new* qualifying mail (same UIDs as the last successful wake).
+2. Run `izt run --once` again.
+3. Confirm **zero wakes**: no webhook, no command start, no new drop file. The agent must not run.
+
+If the agent woke on an empty inbox, the scheduler is calling the model instead of `izt`. Remove that timer.
+
 ## How it decides to wake
 
 - IMAP is **read-only**: `EXAMINE` + `BODY.PEEK` headers. Mail is not marked seen.
@@ -146,7 +183,7 @@ event_type = "inboxzerotokens"
 
 ## Agent skill
 
-If you are an agent setting this up, read [`skills/inboxzerotokens/SKILL.md`](skills/inboxzerotokens/SKILL.md) and [`AGENTS.md`](AGENTS.md). Short version: **you never poll email on a schedule.**
+If you are an agent setting this up, read [`skills/inboxzerotokens/SKILL.md`](skills/inboxzerotokens/SKILL.md), [`rules/inbox-precheck.mdc`](rules/inbox-precheck.mdc), and [`AGENTS.md`](AGENTS.md). Short version: **you never poll email on a schedule.** The scripted pre-check wakes you only on new mail.
 
 ## Security
 
