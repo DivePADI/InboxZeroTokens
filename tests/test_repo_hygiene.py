@@ -1,13 +1,56 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
-from inboxzerotokens.hygiene import scan_text, scan_tree, token_hash
+from inboxzerotokens.hygiene import SKIP_DIRS, scan_text, scan_tree, token_hash
+
+ROOT = Path(__file__).resolve().parents[1]
+TEXT_SUFFIXES = {
+    ".py",
+    ".md",
+    ".mdc",
+    ".toml",
+    ".yml",
+    ".yaml",
+    ".sh",
+    ".txt",
+    ".xml",
+    ".json",
+}
+
+# Built in pieces so this file does not contain the deny literals.
+LEAK_PATTERNS = (
+    re.compile("@" + "gmail" + r"\.com", re.I),
+    re.compile("/" + "Users" + "/"),
+    re.compile("/" + "Volumes" + "/"),
+)
+
+
+def _iter_text_files():
+    for path in ROOT.rglob("*"):
+        if any(part in SKIP_DIRS for part in path.parts):
+            continue
+        if not path.is_file():
+            continue
+        if path.suffix.lower() not in TEXT_SUFFIXES:
+            continue
+        yield path
 
 
 def test_repo_has_no_generic_or_hashed_leaks():
-    hits = scan_tree(Path(__file__).resolve().parents[1])
+    hits = scan_tree(ROOT)
     assert hits == []
+
+
+def test_repo_has_no_personal_paths_or_gmail():
+    found = []
+    for path in _iter_text_files():
+        text = path.read_text(encoding="utf-8")
+        for pat in LEAK_PATTERNS:
+            if pat.search(text):
+                found.append(f"{path.relative_to(ROOT)}:{pat.pattern}")
+    assert found == []
 
 
 def test_generic_pattern_catches_private_key_block():
